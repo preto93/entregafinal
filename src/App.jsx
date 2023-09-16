@@ -1,40 +1,33 @@
 
-import ThemeContext, { themes } from "./context";
-import Layout from "./components/Layout";
+import React from "react";
+import { Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import Home from "./components/Home";
-import DentistCard from "./components/DentistCard";
-import Dentist from "./components/Dentist";
-import Favs from "./components/Favs";
-import Contact from "./components/Contact";
-import ContactForm from "./components/ContactForm";
-
-
-import { useState } from "react";
+import Home from "./routes/Home";
+import Contact from "./routes/Contact";
+import Detail from "./routes/Detail";
+import Favs from  "./routes/Favs";
+import Footer from "./components/Footer";
+import { routes } from "./routes.js";
+import { useDentistStates } from "./components/utils/context";
 
 function App() {
 
-  const [theme,setTheme] = useState(themes.light);
+  const { themeState } = useDentistStates();
 
-  const handleChangeTheme = () => {
-    theme === themes.dark ? setTheme(themes.light) : setTheme(themes.dark);
-  };
-  
   return (
-    
-
-    <ThemeContext.Provider value={{theme, handleChangeTheme}}>
-        <Layout>
-            <Navbar/>
-            <Home/> 
-            <Dentist/>
-            <DentistCard/>
-            <Favs/>
-            <Contact/>
-            <ContactForm/>
-        </Layout>
-      </ThemeContext.Provider>
-  )
+    <div className={themeState.theme ? 'App' : 'dark'}>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path={routes.home} element={<Home />} />
+        <Route path={routes.contact} element={<Contact />} />
+        <Route path={routes.details} element={<Details />} />
+        <Route path={routes.favs} element={<Favs />} />
+      </Routes>
+      <Footer />
+    </div>
+  );  
 }
+
 
 export default App
